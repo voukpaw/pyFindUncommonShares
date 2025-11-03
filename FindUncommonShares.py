@@ -562,6 +562,8 @@ def print_results(options, shareData):
                         # Default uncolored print
                         print("[>] Found '%s' on '%s' (comment: '%s') %s" % (shareData["share"]["name"], shareData["computer"]["fqdn"], shareData["share"]["comment"], str_access))
 
+                    print(f"[>] \\\\{shareData['computer']['fqdn']}\\{shareData['share']['name']}")
+
                 # Share has no comment
                 else:
                     if options.colors:
@@ -580,6 +582,9 @@ def print_results(options, shareData):
                         else:
                             # Default uncolored print
                             print("[>] Found '%s' on '%s' %s" % (shareData["share"]["name"], shareData["computer"]["fqdn"], str_access))
+                    
+                    print(f"[>] \\\\{shareData['computer']['fqdn']}\\{shareData['share']['name']}")
+
             else:
                 # Quiet mode, do not print anything
                 pass
@@ -731,14 +736,14 @@ def worker(options, target, domain, username, password, lmhash, nthash, results,
 
                     shareData = {
                         "computer": {
-                            "fqdn": target_ip,
+                            "fqdn": target_name,
                             "ip": target_ip
                         },
                         "share": {
                             "name": sharename,
                             "comment": sharecomment,
                             "hidden": (True if sharename.endswith('$') else False),
-                            "uncpath": "\\".join(['', '', target_ip, sharename, '']),
+                            "uncpath": "\\".join(['', '', target_name, sharename, '']),
                             "type": {
                                 "stype_value": sharetype,
                                 "stype_flags": STYPE_MASK(sharetype)
