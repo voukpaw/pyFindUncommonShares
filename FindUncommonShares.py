@@ -423,6 +423,7 @@ def parseArgs():
     parser = argparse.ArgumentParser(add_help=True, description="Find uncommon SMB shares on remote machines.")
 
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose mode. (default: False).")
+    parser.add_argument("--print-unc", action="store_true", default=False, help="Print the corresponding UNC path.")
 
     parser.add_argument("-q", "--quiet", dest="quiet", action="store_true", default=False, help="Show no information at all.")
     parser.add_argument("--debug", dest="debug", action="store_true", default=False, help="Debug mode. (default: False).")
@@ -561,8 +562,9 @@ def print_results(options, shareData):
                     else:
                         # Default uncolored print
                         print("[>] Found '%s' on '%s' (comment: '%s') %s" % (shareData["share"]["name"], shareData["computer"]["fqdn"], shareData["share"]["comment"], str_access))
-
-                    print(f"[>] \\\\{shareData['computer']['fqdn']}\\{shareData['share']['name']}")
+                    
+                    if options.print_unc:
+                        print(f"[>] \\\\{shareData['computer']['fqdn']}\\{shareData['share']['name']}")
 
                 # Share has no comment
                 else:
@@ -583,7 +585,8 @@ def print_results(options, shareData):
                             # Default uncolored print
                             print("[>] Found '%s' on '%s' %s" % (shareData["share"]["name"], shareData["computer"]["fqdn"], str_access))
                     
-                    print(f"[>] \\\\{shareData['computer']['fqdn']}\\{shareData['share']['name']}")
+                    if options.print_unc:
+                        print(f"[>] \\\\{shareData['computer']['fqdn']}\\{shareData['share']['name']}")
 
             else:
                 # Quiet mode, do not print anything
